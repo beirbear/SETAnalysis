@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     subFolders = sorted_ls(INPUT_FOLDER)
     keyWord = sys.argv[1].upper()
-    print(keyWord + "\t" + str(len(subFolders))),
+    print(keyWord),
     
     WIN_SIZE = int(sys.argv[2])
     
@@ -48,7 +48,7 @@ if __name__ == "__main__":
             # Check to make sure that reading data is in range 
             if intCounter + eachDay < len(subFolders):
                 # Create a target file name
-                targetFile = glob.glob(INPUT_FOLDER + subFolders[intCounter + eachDay] + '/stock_data/*' + keyWord + '*')
+                targetFile = glob.glob(INPUT_FOLDER + subFolders[intCounter + eachDay] + '/stock_data/*' + keyWord + '.json')
                	
                 # Check that object is exist!
                 if len(targetFile) > 1 or len(targetFile) == 0:
@@ -76,12 +76,28 @@ if __name__ == "__main__":
                     exit(-1)
         
         # Calculate region
+        # print(valueList)
         totalList.append(np.mean(valueList))
+    
+    # Processing
+    _max = np.max(totalList)
+    _min = np.min(totalList)
+    _diffR = _max - _min
 
+    for i in range(len(totalList)):
+        totalList[i] *= float(float(i) / float(len(totalList))) * 0.6
+        # print("fr: " + str(float(float(i) / float(len(totalList))) * 0.6)),
+    
     # Final Score
     if len(totalList) > 0:
-        print("\t" + str(np.mean(totalList))),
+        print("\t{:.5f}".format(np.mean(totalList))),
     else:
         print("\tNoResult"),
     totalF = len(subFolders)
-    print("\t" + str(totalF - reliability) + "/" + str(totalF) + "\t" + str(float(totalF - reliability) / float(totalF) * 100))
+
+    print("\t" + str(totalF - reliability) + "/" + str(totalF) + "\t" + str(float(totalF - reliability) / float(totalF) * 100)),
+    '''
+    for i in range(len(totalList)):
+        print("\t{:.5f}".format(totalList[i])),
+    '''
+    print("")

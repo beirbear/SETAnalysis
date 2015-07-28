@@ -7,7 +7,7 @@ import json
 import re
 import numpy as np
 
-INPUT_FOLDER = '/home/beir/Desktop/stockQueries/dataPool/'
+INPUT_FOLDER = '/home/ubuntu/SETAnalysis/dataPool/'
 INT_PARAM = 'CHANGE_VALUE'
 WIN_SIZE = 25
 
@@ -38,6 +38,7 @@ if __name__ == "__main__":
     WIN_SIZE = int(sys.argv[2])
     
     totalList = []
+    reliability = 0
     
     # Loop to read throught every object
     for intCounter in range(0, len(subFolders), WIN_SIZE):
@@ -51,7 +52,8 @@ if __name__ == "__main__":
                	
                 # Check that object is exist!
                 if len(targetFile) > 1 or len(targetFile) == 0:
-                    warning("Object not found on " + subFolders[intCounter + eachDay])
+                    warning("Object of " + keyWord + " not found on " + subFolders[intCounter + eachDay])
+                    reliability += 1
                     continue
      
 
@@ -76,4 +78,9 @@ if __name__ == "__main__":
         totalList.append(np.mean(valueList))
 
     # Final Score
-    print("Score: " + str(np.mean(totalList)))
+    if len(totalList) > 0:
+        print("Score: " + str(np.mean(totalList)))
+    else:
+        print("No result")
+    totalF = len(subFolders)
+    print("Reliability: " + str(totalF - reliability) + "/" + str(totalF) + " (" + str(float(totalF - reliability) / float(totalF)) + "%)")

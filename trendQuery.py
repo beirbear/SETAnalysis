@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     subFolders = sorted_ls(INPUT_FOLDER)
     keyWord = sys.argv[1].upper()
-    print("Analyzing " + keyWord + " through " + str(len(subFolders)) + " objects.")
+    print(keyWord + "\t" + str(len(subFolders))),
     
     WIN_SIZE = int(sys.argv[2])
     
@@ -72,6 +72,7 @@ if __name__ == "__main__":
                     valueList.append(float(stockObject[INT_PARAM]))
                 else:
                     warning("Object name and content mismated!")
+                    print("\tError\tMiss\tMatch")
                     exit(-1)
         
         # Calculate region
@@ -79,8 +80,8 @@ if __name__ == "__main__":
 
     # Final Score
     if len(totalList) > 0:
-        print("Score: " + str(np.mean(totalList)))
+        print("\t" + str(np.mean(totalList))),
     else:
-        print("No result")
+        print("\tNoResult"),
     totalF = len(subFolders)
-    print("Reliability: " + str(totalF - reliability) + "/" + str(totalF) + " (" + str(float(totalF - reliability) / float(totalF)) + "%)")
+    print("\t" + str(totalF - reliability) + "/" + str(totalF) + "\t" + str(float(totalF - reliability) / float(totalF) * 100))
